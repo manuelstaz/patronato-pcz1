@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patronato Zacualpan</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f4f8;
+      color: #333;
+    }
+    header {
+      background-color: #002147;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+    .frase {
+      font-size: 1.5rem;
+      font-weight: bold;
+      animation: fade 3s infinite;
+    }
+    .color-amarillo { color: #f4c430; }
+    .color-blanco   { color: #ffffff; }
+    .color-verde    { color: #00cc66; }
+
+    @keyframes fade {
+      0% {opacity: 0;}
+      100% {opacity: 1;}
+    }
+    .botones {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
+      background-color: #003366;
+    }
+    .botones button {
+      background-color: #f4c430;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .seccion {
+      display: none;
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .seccion h2 {
+      color: #002147;
+    }
+    .activo {
+      display: block;
+    }
+
+    /* Estilo para login de mesa directiva */
+    #formLogin input {
+      display: block;
+      margin: 1rem 0;
+      padding: 0.5rem;
+      width: 100%;
+      max-width: 400px;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Patronato Zacualpan Pro-equipamiento de Protección Civil</h1>
+    <div class="frase" id="fraseMotivadora" class="color-amarillo"></div>
+  </header>
+
+  <div class="botones">
+    <button onclick="mostrarSeccion('quienes')">¿QUIÉNES SOMOS?</button>
+    <button onclick="mostrarLogin()">MESA DIRECTIVA</button>
+    <button onclick="mostrarSeccion('donador')">HAZTE DONADOR DE UN PESO POR DÍA</button>
+  </div>
+
+  <section id="quienes" class="seccion">
+    <h2>¿Quiénes somos?</h2>
+    <p>Somos un grupo de voluntarios que decidimos unirnos a la causa de Protección Civil Zacualpan...</p>
+    <h2>Misión</h2>
+    <p>Unirnos en este patronato con el fin de buscar entre todos la idea o forma de recaudar fondos...</p>
+    <h2>Visión</h2>
+    <p>Miramos un Zacualpan unido y potencializado ante la adversidad...</p>
+    <h2>Valores</h2>
+    <ul>
+      <li>Ética profesional</li>
+      <li>Empatía</li>
+      <li>Diversidad</li>
+      <li>Honestidad</li>
+      <li>Responsabilidad</li>
+    </ul>
+  </section>
+
+  <!-- Login Mesa Directiva -->
+  <section id="loginMesa" class="seccion">
+    <h2>Acceso Mesa Directiva</h2>
+    <form id="formLogin" onsubmit="return validarLogin()">
+      <label>Rol:</label>
+      <select id="rol">
+        <option value="presidente">Presidente</option>
+        <option value="tesorera">Tesorera</option>
+        <option value="secretario">Secretario</option>
+        <option value="vocal1">Vocal 1</option>
+        <option value="vocal2">Vocal 2</option>
+      </select>
+      <label>Contraseña:</label>
+      <input type="password" id="clave" placeholder="Ingresa tu contraseña">
+      <button type="submit">Ingresar</button>
+      <p id="mensajeError" class="error"></p>
+    </form>
+  </section>
+
+  <section id="mesa" class="seccion">
+    <h2>Panel Privado de Mesa Directiva</h2>
+    <p>Bienvenido. Aquí verás los controles de ingresos, egresos y estado de donadores.</p>
+  </section>
+
+  <section id="donador" class="seccion">
+    <h2>Hazte Donador</h2>
+    <p>Formulario de registro en construcción.</p>
+  </section>
+
+  <script>
+    // Frases motivadoras
+    const frases = [
+      { texto: "Tu apoyo equipa a nuestros héroes voluntarios", color: "color-amarillo" },
+      { texto: "Un pueblo unido es un pueblo fuerte", color: "color-blanco" },
+      { texto: "Cada peso cuenta para salvar vidas", color: "color-verde" }
+    ];
+    let fraseIndex = 0;
+    function actualizarFrase() {
+      const fraseEl = document.getElementById('fraseMotivadora');
+      fraseEl.textContent = frases[fraseIndex].texto;
+      fraseEl.className = 'frase ' + frases[fraseIndex].color;
+      fraseIndex = (fraseIndex + 1) % frases.length;
+    }
+    actualizarFrase();
+    setInterval(actualizarFrase, 3000);
+
+    // Mostrar secciones
+    function mostrarSeccion(id) {
+      document.querySelectorAll('.seccion').forEach(s => s.classList.remove('activo'));
+      document.getElementById(id).classList.add('activo');
+    }
+
+    function mostrarLogin() {
+      mostrarSeccion('loginMesa');
+    }
+
+    // Validación de acceso
+    const contraseñas = {
+      presidente: "zacualpan01",
+      tesorera: "zacualpan02",
+      secretario: "zacualpan03",
+      vocal1: "zacualpan04",
+      vocal2: "zacualpan05"
+    };
+
+    function validarLogin() {
+      const rol = document.getElementById("rol").value;
+      const clave = document.getElementById("clave").value;
+      const mensaje = document.getElementById("mensajeError");
+
+      if (contraseñas[rol] === clave) {
+        mostrarSeccion("mesa");
+        return false;
+      } else {
+        mensaje.textContent = "❌ Contraseña incorrecta.";
+        return false;
+      }
+    }
+  </script>
+</body>
+</html>
